@@ -1,0 +1,26 @@
+#!/bin/bash
+#
+#     Comments:
+#
+#       Created by:  Suresh Hariramani
+#       Usage: list2range.sh
+#       
+#Example: 
+# Input: numbers="18,19,62,161,162,163,165"
+# Result: 18-19,62,161-163,165
+#
+#======================================================================
+
+numbers="18,19,62,161,162,163,165"
+
+echo $numbers, | sed "s/,/\n/g" | while read num; do
+    if [[ -z $first ]]; then
+        first=$num; last=$num; continue;
+    fi
+    if [[ num -ne $((last + 1)) ]]; then
+        if [[ first -eq last ]]; then echo $first; else echo $first-$last; fi
+        first=$num; last=$num
+    else
+        : $((last++))
+    fi
+done | paste -sd ","
